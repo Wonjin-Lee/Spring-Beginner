@@ -7,9 +7,11 @@ import com.wonjin.beginner.study.service.UserServiceImpl;
 import com.wonjin.beginner.study.support.BCryptPasswordEncoder;
 import com.wonjin.beginner.study.support.PasswordEncoder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan("com.wonjin.beginner")
 public class AppConfig {
     @Bean
     UserRepository userRepository() {
