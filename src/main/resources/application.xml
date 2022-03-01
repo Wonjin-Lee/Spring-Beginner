@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="userRepository" class="com.wonjin.beginner.study.repository.UserRepositoryImpl"></bean>
+    <bean id="passwordEncoder" class="com.wonjin.beginner.study.support.BCryptPasswordEncoder"></bean>
+    <bean id="userService" class="com.wonjin.beginner.study.service.UserServiceImpl">
+        <constructor-arg ref="userRepository"></constructor-arg>
+        <constructor-arg ref="passwordEncoder"></constructor-arg>
+    </bean>
+</beans>
