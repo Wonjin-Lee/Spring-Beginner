@@ -5,18 +5,18 @@ import com.wonjin.beginner.study.exception.UserAlreadyRegisteredException;
 import com.wonjin.beginner.study.repository.UserRepository;
 import com.wonjin.beginner.study.support.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserRepository userRepository;
+
+    @Autowired
+    @Qualifier("sha256PasswordEncoder")
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void register(User user, String rawPassword) {

@@ -6,6 +6,7 @@ import com.wonjin.beginner.study.service.UserService;
 import com.wonjin.beginner.study.service.UserServiceImpl;
 import com.wonjin.beginner.study.support.BCryptPasswordEncoder;
 import com.wonjin.beginner.study.support.PasswordEncoder;
+import com.wonjin.beginner.study.support.Sha256PasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,17 @@ public class AppConfig {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    PasswordEncoder bcryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
+    PasswordEncoder sha256PasswordEncoder() {
+        return new Sha256PasswordEncoder();
+    }
+
+    @Bean
     UserService userService() {
-        // 매개변수로 컴포넌트의 의존성 주입
-        return new UserServiceImpl(userRepository(), passwordEncoder());
+        return new UserServiceImpl();
     }
 }
