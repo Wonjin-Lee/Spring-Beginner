@@ -10,6 +10,7 @@ import com.wonjin.beginner.study.support.Sha256PasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 @ComponentScan("com.wonjin.beginner")
@@ -24,12 +25,13 @@ public class AppConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    @Bean(name = "lightweight")
     PasswordEncoder sha256PasswordEncoder() {
         return new Sha256PasswordEncoder();
     }
 
     @Bean
+    @Scope("prototype")
     UserService userService() {
         return new UserServiceImpl();
     }
