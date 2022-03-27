@@ -7,6 +7,7 @@ import com.wonjin.beginner.study.service.UserServiceImpl;
 import com.wonjin.beginner.study.support.BCryptPasswordEncoder;
 import com.wonjin.beginner.study.support.PasswordEncoder;
 import com.wonjin.beginner.study.support.Sha256PasswordEncoder;
+import com.wonjin.beginner.study.support.ThreadUnsafePasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,18 +22,15 @@ public class AppConfig {
     }
 
     @Bean
-    PasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean(name = "lightweight")
-    PasswordEncoder sha256PasswordEncoder() {
-        return new Sha256PasswordEncoder();
+    @Scope("prototype")
+    UserService userService() {
+        return new UserServiceImpl();
     }
 
     @Bean
     @Scope("prototype")
-    UserService userService() {
-        return new UserServiceImpl();
+    PasswordEncoder passwordEncoder() {
+        // 멀티 스레드 환경에서 안전하지 않으므로 singleton으로 사용하면 안 됨
+        return new ThreadUnsafePasswordEncoder();
     }
 }

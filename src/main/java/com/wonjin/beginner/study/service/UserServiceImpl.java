@@ -6,6 +6,7 @@ import com.wonjin.beginner.study.repository.UserRepository;
 import com.wonjin.beginner.study.support.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,16 +16,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    @Qualifier("sha256PasswordEncoder")
-    private PasswordEncoder passwordEncoder;
+    ApplicationContext context;
 
     @Override
     public void register(User user, String rawPassword) {
-        if (this.userRepository.countByUsername(user.getUsername()) > 0) {
-            throw new UserAlreadyRegisteredException();
-        }
+        PasswordEncoder passwordEncoder = passwordEncoder();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+    }
 
-        user.setPassword(this.passwordEncoder.encode(rawPassword));
-        this.userRepository.save(user);
+    // ApplicationContext를 통해 DI 컨테이너에 등록된 빈을 직접 찾아서 가져온다.
+    // 이때 꺼내오는 빈은 원래 의도한 스코프(prototype)대로 설정되어 나온다.
+    PasswordEncoder passwordEncoder() {
+        return this.context.getBean(PasswordEncoder.class);
     }
 }
